@@ -104,7 +104,7 @@ item3.addClass({ 'a': true, 'b': false, 'c': true })
 
 ## 第四版
 
-直接在原型链添加，会将原型链该乱，而且可能会有冲突，所以自己创一个原型最好
+直接在原型链添加，会将原型链该乱，而且可能会有冲突，所以自己创一个对象最好
 
 ```javascript
 window.soa = function (node) {
@@ -133,4 +133,33 @@ window.soa = function (node) {
 let newdom = soa(item3)
 newdom.getSiblings()
 newdom.addClass({ 'a': true, 'b': false, 'c': true })
+```
+
+
+
+## 第五版
+
+增加使用选择器来选择，现在可以使用id和选择器两种方法来选择元素
+
+```javascript
+window.soa = function (nodeOrSelector) {
+  let node
+  if (typeof nodeOrSelector == 'string') {
+    node = document.querySelector(nodeOrSelector)
+  } else {
+    node = nodeOrSelector
+  }
+  return {
+    getSiblings: function () {
+      /*code...*/
+    },
+    addClass: function (classes) {
+      /*code...*/
+    }
+  }
+}
+
+let newdom = soa('ul > li:nth-child(3)')
+newdom.getSiblings()
+newdom.addClass({ 'red': true, 'b': false, 'c': true })
 ```

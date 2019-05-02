@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>学习思想</title>
+  <style>
+    .red {
+      color: red;
+    }
+  </style>
 </head>
 <body>
   <ul>
@@ -13,7 +18,13 @@
     <li id="item5">选项5</li>
   </ul>
   <script>
-  window.soa = function (node) {
+  window.soa = function (nodeOrSelector) {
+    let node
+    if (typeof nodeOrSelector == 'string') {
+      node = document.querySelector(nodeOrSelector)
+    } else {
+      node = nodeOrSelector
+    }
     return {
       getSiblings: function () {
         let allChildren = node.parentNode.children
@@ -36,9 +47,9 @@
     }
   }
 
-  let newdom = soa(item3)
+  let newdom = soa('ul > li:nth-child(3)')
   newdom.getSiblings()
-  newdom.addClass({ 'a': true, 'b': false, 'c': true })
+  newdom.addClass({ 'red': true, 'b': false, 'c': true })
   </script>
 </body>
 </html>
