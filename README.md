@@ -199,3 +199,9 @@ window.soa = function (nodeOrSelector) {
 let newdom = soa('ul > li')
 newdom.addClass({ 'red': true, 'b': false, 'c': true })
 ```
+
+
+
+## 总结
+
+jQuery是真的强，就算不用但是它的思想将会一直陪伴这我们。这次小小的尝试，也让我获益匪浅！
