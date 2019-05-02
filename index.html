@@ -13,28 +13,32 @@
     <li id="item5">选项5</li>
   </ul>
   <script>
-  Node.prototype.getSiblings = function () {
-    let allChildren = this.parentNode.children
-    let array = { length: 0 }
-    for (let i = 0; i < allChildren.length; i++) {
-      if (allChildren[i] !== this) {
-        array[array.length] = allChildren[i]
-        array.length += 1
+  window.soa = function (node) {
+    return {
+      getSiblings: function () {
+        let allChildren = node.parentNode.children
+        let array = { length: 0 }
+        for (let i = 0; i < allChildren.length; i++) {
+          if (allChildren[i] !== node) {
+            array[array.length] = allChildren[i]
+            array.length += 1
+          }
+        }
+        return array
+      },
+      addClass: function (classes) {
+        for (let key in classes) {
+          let value = classes[key]
+          let methodName = value ? 'add' : 'remove'
+          node.classList[methodName](key)
+        }
       }
     }
-    return array
   }
 
-  Node.prototype.addClass = function (classes) {
-    for (let key in classes) {
-      let value = classes[key]
-      let methodName = value ? 'add' : 'remove'
-      this.classList[methodName](key)
-    }
-  }
-
-  item3.getSiblings()
-  item3.addClass({ 'a': true, 'b': false, 'c': true })
+  let newdom = soa(item3)
+  newdom.getSiblings()
+  newdom.addClass({ 'a': true, 'b': false, 'c': true })
   </script>
 </body>
 </html>

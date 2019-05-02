@@ -99,3 +99,38 @@ Node.prototype.addClass = function (classes) {
 item3.getSiblings()
 item3.addClass({ 'a': true, 'b': false, 'c': true })
 ```
+
+
+
+## 第四版
+
+直接在原型链添加，会将原型链该乱，而且可能会有冲突，所以自己创一个原型最好
+
+```javascript
+window.soa = function (node) {
+  return {
+    getSiblings: function () {
+      let allChildren = node.parentNode.children
+      let array = { length: 0 }
+      for (let i = 0; i < allChildren.length; i++) {
+        if (allChildren[i] !== node) {
+          array[array.length] = allChildren[i]
+          array.length += 1
+        }
+      }
+      return array
+    },
+    addClass: function (classes) {
+      for (let key in classes) {
+        let value = classes[key]
+        let methodName = value ? 'add' : 'remove'
+        node.classList[methodName](key)
+      }
+    }
+  }
+}
+
+let newdom = soa(item3)
+newdom.getSiblings()
+newdom.addClass({ 'a': true, 'b': false, 'c': true })
+```
