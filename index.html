@@ -19,36 +19,31 @@
   </ul>
   <script>
   window.soa = function (nodeOrSelector) {
-    let node
+    let nodes = {}
     if (typeof nodeOrSelector == 'string') {
-      node = document.querySelector(nodeOrSelector)
-    } else {
-      node = nodeOrSelector
+      let temp = document.querySelectorAll(nodeOrSelector)
+      for (let i = 0; i < temp.length; i++) { // 使用object原型链
+        nodes[i] = temp[i]
+      }
+      nodes.length = temp.length
+    } else if (nodeOrSelector instanceof Node) {
+      nodes = { 0: nodeOrSelector, length: 1 }
     }
-    return {
-      getSiblings: function () {
-        let allChildren = node.parentNode.children
-        let array = { length: 0 }
-        for (let i = 0; i < allChildren.length; i++) {
-          if (allChildren[i] !== node) {
-            array[array.length] = allChildren[i]
-            array.length += 1
-          }
-        }
-        return array
-      },
-      addClass: function (classes) {
-        for (let key in classes) {
-          let value = classes[key]
-          let methodName = value ? 'add' : 'remove'
-          node.classList[methodName](key)
+
+    nodes.addClass = function (classes) {
+      for (let key in classes) {
+        let value = classes[key]
+        let methodName = value ? 'add' : 'remove'
+        for (let i = 0; i < nodes.length; i++) {
+          nodes[i].classList[methodName](key)
         }
       }
     }
+
+    return nodes
   }
 
-  let newdom = soa('ul > li:nth-child(3)')
-  newdom.getSiblings()
+  let newdom = soa('ul > li')
   newdom.addClass({ 'red': true, 'b': false, 'c': true })
   </script>
 </body>

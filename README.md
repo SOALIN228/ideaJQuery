@@ -163,3 +163,39 @@ let newdom = soa('ul > li:nth-child(3)')
 newdom.getSiblings()
 newdom.addClass({ 'red': true, 'b': false, 'c': true })
 ```
+
+
+
+## 第六版
+
+如果选择器选出是一个集合，也可以添加属性
+
+```javascript
+window.soa = function (nodeOrSelector) {
+  let nodes = {}
+  if (typeof nodeOrSelector == 'string') {
+    let temp = document.querySelectorAll(nodeOrSelector)
+    for (let i = 0; i < temp.length; i++) { // 使用object原型链
+      nodes[i] = temp[i]
+    }
+    nodes.length = temp.length
+  } else if (nodeOrSelector instanceof Node) {
+    nodes = { 0: nodeOrSelector, length: 1 }
+  }
+
+  nodes.addClass = function (classes) {
+    for (let key in classes) {
+      let value = classes[key]
+      let methodName = value ? 'add' : 'remove'
+      for (let i = 0; i < nodes.length; i++) {
+        nodes[i].classList[methodName](key)
+      }
+    }
+  }
+
+  return nodes
+}
+
+let newdom = soa('ul > li')
+newdom.addClass({ 'red': true, 'b': false, 'c': true })
+```
