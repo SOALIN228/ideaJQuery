@@ -13,12 +13,11 @@
     <li id="item5">选项5</li>
   </ul>
   <script>
-  window.soadom = {} /*使用命名空间，避免覆盖同名方法*/
-  soadom.getSiblings = function (node) {
-    let allChildren = node.parentNode.children
+  Node.prototype.getSiblings = function () {
+    let allChildren = this.parentNode.children
     let array = { length: 0 }
     for (let i = 0; i < allChildren.length; i++) {
-      if (allChildren[i] !== node) {
+      if (allChildren[i] !== this) {
         array[array.length] = allChildren[i]
         array.length += 1
       }
@@ -26,16 +25,16 @@
     return array
   }
 
-  soadom.addClass = function (node, classes) {
+  Node.prototype.addClass = function (classes) {
     for (let key in classes) {
       let value = classes[key]
       let methodName = value ? 'add' : 'remove'
-      node.classList[methodName](key)
+      this.classList[methodName](key)
     }
   }
 
-  soadom.getSiblings(item3)
-  soadom.addClass(item3, { 'a': true, 'b': false, 'c': true })
+  item3.getSiblings()
+  item3.addClass({ 'a': true, 'b': false, 'c': true })
   </script>
 </body>
 </html>

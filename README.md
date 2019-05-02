@@ -53,6 +53,8 @@ soadom.addClass(item3, { 'a': true, 'b': false, 'c': true })
 
 ## 第二版
 
+因为可能会造成同名函数的覆盖，所以使用原型链和匿名函数来避免函数覆盖
+
 ```javascript
 window.soadom = {} /*使用命名空间，避免覆盖同名方法*/
 soadom.getSiblings = function (node) {
@@ -65,4 +67,35 @@ soadom.addClass = function (node, classes) {
 
 soadom.getSiblings(item3)
 soadom.addClass(item3, { 'a': true, 'b': false, 'c': true })
+```
+
+
+
+## 第三版
+
+使用命名空间来调用函数，调用太麻烦了，使用原型链配合this来简化
+
+```javascript
+Node.prototype.getSiblings = function () {
+  let allChildren = this.parentNode.children
+  let array = { length: 0 }
+  for (let i = 0; i < allChildren.length; i++) {
+    if (allChildren[i] !== this) {
+      array[array.length] = allChildren[i]
+      array.length += 1
+    }
+  }
+  return array
+}
+
+Node.prototype.addClass = function (classes) {
+  for (let key in classes) {
+    let value = classes[key]
+    let methodName = value ? 'add' : 'remove'
+    this.classList[methodName](key)
+  }
+}
+
+item3.getSiblings()
+item3.addClass({ 'a': true, 'b': false, 'c': true })
 ```
