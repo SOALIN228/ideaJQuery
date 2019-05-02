@@ -10,7 +10,7 @@
 </ul>
 ```
 ## 第一版
-```
+```javascript
 if (value) {
   node.classList.add(key)
 } else {
@@ -41,10 +41,28 @@ function addClass (node, classes) {
   }
 }
 
-window.soadom = {}
+window.soadom = {} // 使用命名空间
 soadom.getSiblings = getSiblings
 soadom.addClass = addClass
 
 soadom.getSiblings(item3)
 soadom.addClass(item3, { 'a': true, 'b': false, 'c': true }) 
+```
+
+
+
+## 第二版
+
+```javascript
+window.soadom = {} /*使用命名空间，避免覆盖同名方法*/
+soadom.getSiblings = function (node) {
+    /*code...*/
+}
+
+soadom.addClass = function (node, classes) {
+    /*code...*/
+}
+
+soadom.getSiblings(item3)
+soadom.addClass(item3, { 'a': true, 'b': false, 'c': true })
 ```
